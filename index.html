@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday — Sasya Sintia Elisya</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #87CEEB, #FFD700);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            transition: background 1s ease;
+        }
+        #initial-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #birthday-text {
+            font-size: 3rem;
+            color: #FF69B4;
+            text-align: center;
+            animation: fadeInScale 2s ease-in-out;
+            margin-bottom: 20px;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        #cake-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #cake-svg {
+            width: 100%;
+            height: 100%;
+        }
+        .candle {
+            fill: #FFA500;
+            transition: fill 0.5s;
+        }
+        .candle.blown {
+            fill: #808080;
+        }
+        #controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #FF1493;
+        }
+        button:focus {
+            outline: 2px solid #000;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        #message-content {
+            display: none;
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: fadeInUp 2s ease-in-out;
+            flex-direction: column;
+            align-items: center;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #message-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+            margin: 10px 0;
+        }
+        #memories-content {
+            display: none;
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: fadeInUp 2s ease-in-out;
+            flex-direction: column;
+            align-items: center;
+        }
+        #memories-content h2 {
+            font-size: 2rem;
+            color: #FF69B4;
+            margin-bottom: 20px;
+        }
+        #memories-content a {
+            font-size: 1.2rem;
+            color: #FF69B4;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #FFD700;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        #memories-content a:hover {
+            background-color: #FFA500;
+        }
+        @media (max-width: 600px) {
+            #birthday-text {
+                font-size: 2rem;
+            }
+            #cake-container {
+                width: 250px;
+                height: 150px;
+            }
+            #message-content, #memories-content {
+                max-width: 90%;
+                padding: 15px;
+            }
+            #message-content p, #memories-content h2, #memories-content a {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="initial-content">
+        <h1 id="birthday-text">Happy Birthday, Sasya Sintia Elisya!</h1>
+        <div id="cake-container">
+            <svg id="cake-svg" viewBox="0 0 300 200">
+                <!-- Cake base -->
+                <rect x="50" y="120" width="200" height="60" fill="#D2691E" rx="10"/>
+                <!-- Cake top -->
+                <rect x="40" y="100" width="220" height="30" fill="#F5DEB3" rx="10"/>
+                <!-- Candles -->
+                <rect x="130" y="70" width="5" height="30" class="candle" id="candle1"/>
+                <rect x="145" y="70" width="5" height="30" class="candle" id="candle2"/>
+                <rect x="160" y="70" width="5" height="30" class="candle" id="candle3"/>
+                <!-- Flames -->
+                <polygon points="132.5,70 135,60 137.5,70" fill="#FF4500"/>
+                <polygon points="147.5,70 150,60 152.5,70" fill="#FF4500"/>
+                <polygon points="162.5,70 165,60 167.5,70" fill="#FF4500"/>
+            </svg>
+            <canvas id="confetti-canvas" width="300" height="200"></canvas>
+        </div>
+        <div id="controls">
+            <div class="button-row">
+                <button id="blow-candles" aria-label="Pencet ini untuk memadamkan lilin dan menampilkan confetti">Pencet ini</button>
+            </div>
+            <button id="lanjut" aria-label="Tombol untuk melanjutkan ke pesan berikutnya">Lanjut</button>
+        </div>
+    </div>
+    <div id="message-content">
+        <p>Happy birthday yang ke-18 ya, sayang</p>
+        <p>Gak nyangka aja kamu udah 18 makin dewasa aja, tapi tetep aja masih suka ngambek gara-gara aku tida manjain.</p>
+        <p>Tapi ya, jujur aku suka banget liat kamu kayak gitu. Lucu aja gitu, apalagi kalo udah pundung sama pasang muka cemberut, AHAHAHAHAHA</p>
+        <p>Semoga di umur yang baru ini kamu makin bahagia, makin kuat, dan makin sayang sama diri kamu sendiri. Aku tau kamu udah berjuang banyak hal, dan aku bangga banget sama kamu.</p>
+        <p>Aku juga pengen bilang makasih, karena kamu udah jadi orang paling berharga buat aku. Kamu bikin hari-hari aku lebih seru, lebih berwarna, dan gak ngebosenin sama sekali.</p>
+        <p>Semoga semua hal yang kamu mau bisa tercapai satu-satu ya entah itu mimpi, cita-cita, atau hal kecil yang kamu simpen diam-diam.</p>
+        <p>Dan semoga aku bisa terus ada buat nemenin kamu lewat semua itu</p>
+        <p>Selamat ulang tahun ke-18, cantik.</p>
+        <p>jangan lupa kamu masih punya cowok yang sayang banget sama kamu</p>
+        <button id="lanjut2" aria-label="Tombol untuk melanjutkan ke halaman memories">Lanjut</button>
+    </div>
+    <div id="memories-content">
+        <h2>LANJUT LIAT INI YAAAAAA SAYANGKUUUUU</h2>
+        <a href="https://drive.google.com/file/d/1dPONPpHpcUekW6EFKb3aynRn4_8T7roo/view?usp=drivesdk" target="_blank" aria-label="Link untuk melihat memories kita">Klik di sini untuk melihat memories kita</a>
+    </div>
+    <audio id="birthday-song" src="https://www.soundjay.com/misc/sounds/happy-birthday-song.mp3" preload="none"></audio> <!-- Replace with actual audio URL or base64 -->
+    <script>
+        // Animation for birthday text (already in CSS)
+        
+        // Confetti setup
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiParticles = [];
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                confettiParticles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: Math.random() * 3 + 1,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    size: Math.random() * 5 + 2
+                });
+            }
+        }
+        function updateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.1; // gravity
+                if (p.y > canvas.height) p.y = 0;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+            requestAnimationFrame(updateConfetti);
+        }
+        
+        // Blow candles button
+        document.getElementById('blow-candles').addEventListener('click', () => {
+            document.querySelectorAll('.candle').forEach(candle => candle.classList.add('blown'));
+            createConfetti();
+            updateConfetti();
+        });
+        
+        // Lanjut button (first page to second)
+        document.getElementById('lanjut').addEventListener('click', () => {
+            document.getElementById('initial-content').style.display = 'none';
+            document.getElementById('message-content').style.display = 'flex';
+            // Change background for new page
+            document.body.style.background = 'linear-gradient(to bottom, #FFD700, #FF69B4)';
+        });
+        
+        // Lanjut2 button (second page to third)
+        document.getElementById('lanjut2').addEventListener('click', () => {
+            document.getElementById('message-content').style.display = 'none';
+            document.getElementById('memories-content').style.display = 'flex';
+            // Change background for new page
+            document.body.style.background = 'linear-gradient(to bottom, #FF69B4, #87CEEB)';
+        });
+    </script>
+</body>
+</html>
